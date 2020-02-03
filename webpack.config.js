@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = (env = {}) => ({
   mode: env.prod ? 'production' : 'development',
   devtool: env.prod ? 'source-map' : 'cheap-module-eval-source-map',
-  entry: path.resolve(__dirname, './src/main.js'),
+  entry: path.resolve(__dirname, './src/main.ts'),
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/'
@@ -21,6 +21,14 @@ module.exports = (env = {}) => ({
   },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
+      },
       {
         test: /\.vue$/,
         use: 'vue-loader'
@@ -51,6 +59,7 @@ module.exports = (env = {}) => ({
     })
   ],
   devServer: {
+    host: '0.0.0.0',
     inline: true,
     hot: true,
     stats: 'minimal',
